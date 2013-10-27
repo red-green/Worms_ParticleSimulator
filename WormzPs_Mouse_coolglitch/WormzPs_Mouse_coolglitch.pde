@@ -6,7 +6,7 @@
 int particles = 1000;
 float speed = 6.0;
 float trail = 40;
-color col = color(255,255,255);
+color col = color(255,255,0);
 float random = 130; //max angle
 
 boolean locked = false;
@@ -34,7 +34,7 @@ void setup() {
 }
 
 void draw() {
-  parts[part] = new Particle(map(part,0,particles,0,PI*2),width/2,height/2,width,height);
+  parts[part] = new Particle(map(part,0,particles,0,PI*2),mouseX,mouseY,width,height);
   part++;
   if (part > particles) {
     part = 0;
@@ -92,7 +92,23 @@ void draw() {
   trailscroll.display();
   
   particles = (int)constrain(map(partscroll.getPos(),0,150,0,1000),1,999);
-  random = map(randscroll.getPos(),0,150,-179,179);
+  random = constrain(map(randscroll.getPos(),7,150,-10,179),0,180);
   speed = map(speedscroll.getPos(),0,150,0,15);
   trail = constrain(map(trailscroll.getPos(),0,150,155,0),1,155);
+}
+
+void keyPressed() {
+  if (key == 'r') {
+    for (int i = 0; i < particles; i++) {
+        parts[i] = new Particle(map(i,0,particles,0,PI*2),width/2,height/2,width,height);
+      }
+      background(0);
+  } else if (key == 'p') {
+    if (paused) {
+        paused = false;
+      } else {
+        paused = true;
+      }
+      delay(200);
+  }
 }

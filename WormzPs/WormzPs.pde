@@ -8,6 +8,7 @@ float speed = 6.0;
 float trail = 40;
 color col = color(25,255,0);
 float random = 130; //max angle
+float size = 5;
 
 boolean locked = false;
 
@@ -19,9 +20,10 @@ HScrollbar partscroll = new HScrollbar(10,5,150,20,10,"Particles");
 HScrollbar randscroll = new HScrollbar(10,25,150,20,10,"Random");
 HScrollbar speedscroll = new HScrollbar(10,45,150,20,10,"Speed");
 HScrollbar trailscroll = new HScrollbar(10,65,150,20,10,"Trail");
+HScrollbar sizescroll = new HScrollbar(10,85,150,20,10,"Size");
 
-RectButton reset = new RectButton(10,85,75,20,color(170),color(204),"Reset");
-RectButton pause = new RectButton(85,85,75,20,color(170),color(204),"Pause");
+RectButton reset = new RectButton(10,100,75,20,color(170),color(204),"Reset");
+RectButton pause = new RectButton(85,100,75,20,color(170),color(204),"Pause");
 
 void setup() {
   size(640,640);
@@ -41,11 +43,12 @@ void draw() {
       rect(0,0,width,height);
     }
     
+    strokeWeight(size);
     for (int i = 0; i < particles; i++) {
       parts[i].update(random,speed,col);
     }
   }
-  
+  if (mouseX < 160 && mouseY < 120) {
   // update buttons
   if (!locked) {
     reset.update();
@@ -54,6 +57,7 @@ void draw() {
     locked = false;
   }
   
+  strokeWeight(1);
   reset.display();
   pause.display();
   
@@ -75,18 +79,22 @@ void draw() {
   }
   
   // update scrollbars
+  sizescroll.update();
   partscroll.update();
   randscroll.update();
   speedscroll.update();
   trailscroll.update();
   
+  sizescroll.display();
   partscroll.display();
   randscroll.display();
   speedscroll.display();
   trailscroll.display();
   
-  particles = (int)constrain(map(partscroll.getPos(),0,150,0,1000),1,999);
-  random = map(randscroll.getPos(),0,150,10,179);
+  size = constrain(map(sizescroll.getPos(),7,150,-5,40),0,40);
+  particles = (int)constrain(map(partscroll.getPos(),2,150,-10,1000),1,999);
+  random = map(randscroll.getPos(),7,150,-10,179);
   speed = map(speedscroll.getPos(),0,150,0,15);
   trail = constrain(map(trailscroll.getPos(),0,150,155,0),1,155);
+  }
 }

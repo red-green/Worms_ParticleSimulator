@@ -19,7 +19,7 @@ class Particle {
   void update(float randoml,float speed, color col) {
     // Add the current speed to the location.
     if (random > 1) {
-      velocity.rotate(radians(random(-1 - randoml,randoml)));
+      velocity.rotate(radians(random(-randoml,randoml)));
     }
     velocity.normalize();
     
